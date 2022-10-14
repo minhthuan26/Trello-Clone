@@ -22,10 +22,16 @@ route(app)
 const start = async () => {
     try{
         await connectDB(process.env.MONGO_URL)
+        .then(() => console.log('Connected to database...'))
+        .catch(error => {
+            console.log(error)
+            process.exit(1)
+        })
         app.listen(port, console.log(`Server is listening on port ${port}...`))
     }
     catch(error){
         console.log(error)
+        process.exit(0)
     }
 }
 
