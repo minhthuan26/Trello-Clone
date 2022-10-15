@@ -35,7 +35,7 @@ class AuthController {
                 id: user.id
             },
             process.env.SECRET_KEY,
-            { expiresIn: '20s' }
+            { expiresIn: '30s' }
         )
     }
 
