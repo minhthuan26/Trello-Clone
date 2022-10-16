@@ -1,19 +1,14 @@
 import React from "react";
-import Button from '@mui/material/Button';
-
+import {Link} from "react-router-dom";
 function Dashboard() {
   return (
     <div>
-    <h1>Dash board Page</h1>
-        <div>
-        <p>Tên đăng nhập</p>
-        <input></input>
-        <p>Mật khẩu</p>
-        <input></input>
-        </div>
-        <Button variant="contained">Đăng nhập</Button>
-        <button>Đăng nhập</button>
-        <button>Đăng ký</button>
+      <h1>Dash board Page</h1>
+     <nav>
+      <Link to={"/login"}><button>Login</button></Link>
+      <Link to={"/register"}><button>Register</button></Link>
+     </nav>
+      <h2>Body</h2>
     </div>
   )
 
