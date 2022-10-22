@@ -4,6 +4,8 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const route = require('./routes')
 const connectDB = require('./db/connectDB')
+const passport = require('passport')
+const session = require('express-session')
 
 const app = express()
 dotenv.config()
@@ -14,6 +16,14 @@ app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
 
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }
+  }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //route
 route(app)
