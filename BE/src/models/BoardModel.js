@@ -1,0 +1,40 @@
+const mongoose = require('mongoose')
+const connectDB = require('./../db/connectDB')
+const BoardSchema = mongoose.Schema({
+    title: {
+        type: String,
+        required: true,
+        unique: true,
+        minLength: 3,
+        maxLength: 20 
+
+    },
+    columnOrder: {
+        type: Array,
+        unique: true,
+        default: []
+    },
+    // createAt: {
+    //     type: Date,
+    //     unique: true,
+    //     default: Date.now()
+    // },
+    createBy: {
+        type: mongoose.Types.ObjectId,
+        unique: true,
+    },
+    _destroy: {
+        type: Boolean,
+        default: false
+    }
+
+}, {timestamps: true})
+
+// async function validateData(data) {
+//     return await BoardSchema.validateSync(data, {abortEarly: false})
+// }
+
+
+
+module.exports = mongoose.model('board', BoardSchema)
+
