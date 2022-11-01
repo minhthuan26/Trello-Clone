@@ -30,6 +30,10 @@ const BoardSchema = mongoose.Schema({
 
 }, {timestamps: true})
 
+
+BoardSchema.plugin(require('mongoose-beautiful-unique-validation'));
+
+
 // async function validateData(data) {
 //     return await BoardSchema.validateSync(data, {abortEarly: false})
 // }
