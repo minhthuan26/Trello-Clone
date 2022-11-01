@@ -1,10 +1,26 @@
 const column = require('../models/ColumnModel')
+const board = require('../models/BoardModel')
+
 class ColumnController {
      createNew = async (req, res) =>{
         try {
-            const result = await column.create(req.body)
-            console.log(result)
-            res.status(200).json(result)
+            const newColumn = await column.create(req.body)
+
+
+            const updatedBoard = await board.findOneAndUpdate(
+                {
+                    _id: newColumn.boardId
+                },
+                {
+                    $push: {columnOrder: newColumn._id}
+                },
+                {
+                    returnOriginal: false
+                }
+            )
+
+            // const updatedBoard = await board.pushColumnOrder(boardId, newColumnId)
+            res.status(200).json(newColumn)
         } catch (error) {
             res.status(500).json({
                 errors: error.message

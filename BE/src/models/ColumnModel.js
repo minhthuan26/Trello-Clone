@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const connectDB = require('../db/connectDB')
 const ColumnSchema = mongoose.Schema({
     boardId:{
-        type: String,
+        type: mongoose.Types.ObjectId,
         required: true
     },
     
@@ -19,16 +19,6 @@ const ColumnSchema = mongoose.Schema({
         unique: true,
         default: []
     },
-    // createAt: {
-    //     type: Date,
-    //     unique: true,
-    //     default: Date.now()
-    // },
-    // updateAt: {
-    //     type: Date,
-    //     unique: true,
-    //     default: null
-    // },
     _destroy: {
         type: Boolean,
         default: false

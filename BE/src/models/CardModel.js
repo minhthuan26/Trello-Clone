@@ -2,11 +2,11 @@ const mongoose = require('mongoose')
 const connectDB = require('../db/connectDB')
 const CardSchema = mongoose.Schema({
     boardId:{
-        type: String,
+        type: mongoose.Types.ObjectId,
         required: true
     },
     columnId:{
-        type: String,
+        type: mongoose.Types.ObjectId,
         required: true
     },
     title: {

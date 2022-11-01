@@ -1,10 +1,24 @@
 const card = require('../models/cardModel')
+const column = require('../models/ColumnModel')
+
 class CardController {
      createNew = async (req, res) =>{
         try {
-            const result = await card.create(req.body)
-            console.log(result)
-            res.status(200).json(result)
+            const newCard = await card.create(req.body)
+
+            await column.findOneAndUpdate(
+                {
+                    _id: newCard.columnId
+                },
+                {
+                    $push: {cardOrder: newCard._id}
+                },
+                {
+                    returnOriginal: false  
+                }
+            ) 
+
+            res.status(200).json(newCard)
         } catch (error) {
             res.status(500).json({
                 errors: error.message
