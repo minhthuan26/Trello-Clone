@@ -5,7 +5,11 @@ import { LoginUser } from '../redux/apiRequest';
 
 const Login = () => {
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState({
+    password: "",
+    showPassword: false,
+
+  });
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,14 +29,14 @@ const Login = () => {
         <label>Tên đăng nhập</label>
         <input
           type={'text'}
-          placeholder="Tên đăng nhập"
+          placeholder="Enter your username..."
           onChange={(e) => setUsername(e.target.value)}
         />
         <br />
-        <label>Password</label>
+        <label>Password</label> 
         <input
-          type={'text'}
-          placeholder="Password"
+          type={password.showPassword ? "text" : "password"}
+          placeholder="Enter your password..."
           onChange={(e) => setPassword(e.target.value)}
         />
         <br />

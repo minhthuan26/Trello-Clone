@@ -1,0 +1,55 @@
+@import '../../setting.scss';
+$appbar-bg-color: #0067a3;
+
+.navbar-app {
+    height: $navbar-app-height;
+    padding-left: $gap;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background-color: $appbar-bg-color;
+    justify-items: normal;
+    justify-content: space-between;
+
+    .logo {
+        font-size: 20px;
+        margin-left: 3px;
+        display: block;
+        cursor: pointer;
+        color: inherit;
+        text-decoration: none;
+        
+    }
+
+    .nav-actions {
+        margin-right: 15px;
+        display: flex;
+        max-height: $navbar-app-height;
+        font-size: 17px;
+        
+        .account-name {
+            padding: 12px 15px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            height: $navbar-app-height;
+            &:hover {
+                color: #666;
+            }
+
+        }
+
+        .logout-button {
+            width: 80px;
+            height: 32px;
+            margin: 5px 0;
+            display: block;
+            text-decoration: none;
+        }
+    }
+
+}
+
+        
+
+
