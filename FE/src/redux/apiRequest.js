@@ -55,7 +55,7 @@ export const getAllUser = async (accessToken, dispatch, axiosJWT) => {
         const result = res.data;
         dispatch(getUserSuccess(result));
         console.log(result);
-        alert('Get all user success');
+        // alert('Get all user success');
       });
   } catch (error) {
     dispatch(getUserFailed());
