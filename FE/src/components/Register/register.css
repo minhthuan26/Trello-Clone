@@ -1,0 +1,80 @@
+.register1{
+    position: absolute;
+    width: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-60%);
+    background: white;
+    border-radius: 10px;
+}
+
+.register1 h1{
+    text-align: center;
+    padding: 20px 0 20px 0 ;
+    border-bottom: 1px solid silver;
+}
+
+.formSubmitRegister{
+    padding: 10px 30px;
+    box-sizing: border-box;
+}
+
+.txtfield{
+    position: relative;
+    border-bottom: 2px solid #adadad;
+    margin: 30px 0;
+}
+
+.txtfield input{
+    width: 100%;
+    padding: 5px;
+    height: 40px;
+    font-size: 16px;
+    border: none;
+    background-color: none;
+    outline: none;
+}
+
+.txtfield label{
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    color: #adadad;
+    transform:translateY(-50% );
+    font-size: 16px;
+    pointer-events: none;
+    transition: .5s;
+}
+.txtfield input:focus ~ label,
+.txtfield input:valid ~ label{
+    top:-5px;
+    color: #2980B9;    
+}
+
+.signupButton{
+    width: 100%;
+    height: 40px;
+    background: #2691d9;
+    border: 1px solid;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    outline: none;
+    color: white;
+}
+.signupButton:hover{
+    border-color: #2691d9;
+    transition: .5s;
+}
+
+.already{
+    font-size: 20px;
+    text-align: center;
+    color: #666666;
+}
+.already a {
+    margin-top: 10px;
+    color:#2691d9;
+    text-decoration: none;
+}

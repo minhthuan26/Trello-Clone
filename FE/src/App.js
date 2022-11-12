@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 import Dashboard from './components/dashboard';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './components/login';
-import Register from './components/register';
+import LoginForm from './components/Login/login';
+import RegisterForm from './components/Register/register';
 
 function App() {
   return (
@@ -10,8 +10,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegisterForm />} />
         </Routes>
       </Router>
     </div>
