@@ -6,7 +6,7 @@ import BoardContent from '../components/BoardContent/BoardContent';
 import React from 'react';
 // import { Link, useNavigate } from 'react-router-dom';
 // import { useDispatch, useSelector } from 'react-redux';
-import './dashboard.css';
+// import './dashboard.css';
 // import { getAllUser, logOutUser } from '../redux/apiRequest';
 // import axios from 'axios';
 // import jwt_decode from 'jwt-decode';
