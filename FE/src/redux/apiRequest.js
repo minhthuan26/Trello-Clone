@@ -3,6 +3,9 @@ import {
   loginFailed,
   loginStart,
   loginSuccess,
+  logOutFailed,
+  logOutStart,
+  logOutSuccess,
   registerFailed,
   registerStart,
   registerSuccess,
@@ -55,27 +58,35 @@ export const getAllUser = async (accessToken, dispatch, axiosJWT) => {
         const result = res.data;
         dispatch(getUserSuccess(result));
         console.log(result);
-        // alert('Get all user success');
+        alert('Get all user success');
       });
   } catch (error) {
+    alert('Get user failed');
     dispatch(getUserFailed());
   }
 };
-
-// export const logOutUser = async (dispatch, navigate, token, axiosJWT) => {
-//   dispatch(logoutStart());
-//   try {
-//     await axiosJWT
-//       .post(`//localhost:3000/api/v1/auth/logout`, {
-//         headers: { token: `Bearer ${token}` },
-//       })
-//       .then((res) => {
-//         dispatch(loginSuccess());
-//         alert(res.data.msg);
-//         navigate('/');
-//       });
-//   } catch (error) {
-//     console.log(error);
-//     dispatch(logoutFailed());
-//   }
-// };
+export const logOutUser = async (
+  dispatch,
+  id,
+  navigate,
+  accessToken,
+  axiosJWT
+) => {
+  dispatch(logOutStart());
+  try {
+    await axiosJWT
+      .post(`//localhost:3000/api/v1/auth/logout`, id, {
+        headers: { token: `Bearer ${accessToken}` },
+      })
+      .then((res) => {
+        console.log(res);
+        alert(res.data.msg);
+        dispatch(logOutSuccess());
+        navigate('/login');
+      });
+  } catch (error) {
+    console.log(error);
+    // alert(error.res.data.msg);
+    dispatch(logOutFailed());
+  }
+};
