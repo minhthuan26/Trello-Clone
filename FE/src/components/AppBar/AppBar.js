@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { getAllUser, logOutUser } from '../../redux/apiRequest';
+import { logOutUser } from '../../redux/apiRequest';
 import { createAxios } from '../../createInstance';
 import { logOutSuccess } from '../../redux/authSlice';
 import './AppBar.scss';
@@ -15,21 +15,23 @@ function AppBar() {
   const navigate = useNavigate();
 
   const accessToken = user?.accessToken;
-
+  // const [newAccessToken, setNewAccessToken] = useState('');
   const id = user?._id;
 
-  // let axiosJWT = createAxios(user, dispatch, logOutSuccess);
-
   let axiosJWT = createAxios(user, dispatch, logOutSuccess);
-
   const LogOutUser = () => {
+    // setNewAccessToken(refreshToken(accessToken));
+    // console.log(newAccessToken);
     logOutUser(dispatch, id, navigate, accessToken, axiosJWT);
     // navigate('/login');
   };
 
   // useEffect(() => {
+  //   if (!user) {
+  //     navigate('/login');
+  //   }
   //   if (user?.accessToken) {
-  //     getAllUser(user?.accessToken, dispatch, axiosJWT);
+  //     getAllUser(user?.accessToken, dispatch, axiostJWTgetUser);
   //   }
   // });
 
