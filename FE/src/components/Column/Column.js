@@ -8,9 +8,10 @@ import ConfirmModal from '../Common/ConfirmModal'
 import { MODAL_ACTION_CONFIRM } from '../../uitilities/constants'
 import { saveContentAfterPressEnter, selectAllInLineText } from '../../uitilities/contentEditable'
 import { cloneDeep } from 'lodash'
+import { createNewCard } from '../../actions/ApiCall'
 
 function Column(props) {
-    const { column, onCardDrop, onUpdateColumn } = props
+    const { column, onCardDrop, onUpdateColumnState } = props
     const cards = mapOrder(column.cards, column.cardOrder, 'id')
     // props de lay du lieu tu initialData len
 
@@ -48,7 +49,7 @@ function Column(props) {
           ...column,
           _destroy: true //remove
         }
-        onUpdateColumn(newColumn)
+        onUpdateColumnState(newColumn)
       }
       toggleShowConfirmModal()
     }
@@ -58,7 +59,7 @@ function Column(props) {
         ...column,
         title: columnTitle
       }
-      onUpdateColumn(newColumn)
+      onUpdateColumnState(newColumn)
     }
 
     const addNewCard = () => {
@@ -68,20 +69,23 @@ function Column(props) {
       }
 
       const newCardtoAdd = {
-        id: Math.random().toString(36).substring(2, 5), 
+        // id: Math.random().toString(36).substring(2, 5), 
         boardId: column.boardId,
-        columnId: column.id,
+        columnId: column._id,
         title: newCardTitle.trim(),
-        cover: null
+        // cover: null
       }
 
-      let newColumn = cloneDeep(column)
-      newColumn.cards.push(newCardtoAdd)
-      newColumn.cardOrder.push(newCardtoAdd.id)
+      //call API create new card
+      createNewCard(newCardtoAdd).then(card => {
+        let newColumn = cloneDeep(column)
+        newColumn.cards.push(card)
+        newColumn.cardOrder.push(card._id)
 
-      onUpdateColumn(newColumn) //dùng lại hàm onUpdateColumn cho chức năng thêm mới và cập nhật card vào Column
-      setNewCardTitle('')
-      toggleOpenNewCardForm()
+        onUpdateColumnState(newColumn) //dùng lại hàm onUpdateColumnState cho chức năng thêm mới và cập nhật card vào Column
+        setNewCardTitle('')
+        toggleOpenNewCardForm()
+      })
     }
 
     return(
@@ -118,7 +122,7 @@ function Column(props) {
             <div className="card-list">
               <Container
                 groupName="col"
-                onDrop={dropResult => onCardDrop(column.id, dropResult)}
+                onDrop={dropResult => onCardDrop(column._id, dropResult)}
                 getChildPayload={index => cards[index]}
                 dragClass="card-ghost"
                 dropClass="card-ghost-drop"
