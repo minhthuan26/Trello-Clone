@@ -12,7 +12,7 @@ import { createNewCard } from '../../actions/ApiCall'
 
 function Column(props) {
     const { column, onCardDrop, onUpdateColumnState } = props
-    const cards = mapOrder(column.cards, column.cardOrder, 'id')
+    const cards = mapOrder(column.cards, column.cardOrder, column._id)
     // props de lay du lieu tu initialData len
 
     const [showConfirmModal, setShowCofirmModal] = useState(false)
@@ -72,9 +72,17 @@ function Column(props) {
         // id: Math.random().toString(36).substring(2, 5), 
         boardId: column.boardId,
         columnId: column._id,
-        title: newCardTitle.trim(),
+        title: newCardTitle.trim()
         // cover: null
       }
+
+      // let newColumn = cloneDeep(column)
+      // newColumn.cards.push(newCardtoAdd)
+      // newColumn.cardOrder.push(newCardtoAdd._id)
+
+      // onUpdateColumnState(newColumn) //dùng lại hàm onUpdateColumnState cho chức năng thêm mới và cập nhật card vào Column
+      // setNewCardTitle('')
+      // toggleOpenNewCardForm()
 
       //call API create new card
       createNewCard(newCardtoAdd).then(card => {
