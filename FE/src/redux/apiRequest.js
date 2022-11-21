@@ -20,9 +20,6 @@ export const LoginUser = async (user, dispatch, navigate) => {
         withCredentials: true,
       })
       .then((res) => {
-        // axios.defaults.headers.common[
-        //   'Authorization'
-        // ] = `Bearer ${data['token']}`;
         const result = res.data;
         dispatch(loginSuccess(result));
         console.log(res);
@@ -55,10 +52,10 @@ export const registerUser = async (user, dispatch, navigate) => {
   }
 };
 
-export const getAllUser = async (accessToken, dispatch, axiosJWT) => {
+export const getAllUser = async (accessToken, dispatch, axiosJWTgetUsers) => {
   dispatch(getUserStart());
   try {
-    await axiosJWT
+    await axiosJWTgetUsers
       .get(`//localhost:3000/api/v1/user/`, {
         headers: { token: `Bearer ${accessToken}` },
       })
@@ -66,7 +63,6 @@ export const getAllUser = async (accessToken, dispatch, axiosJWT) => {
         const result = res.data;
         console.log(result);
         dispatch(getUserSuccess(result));
-        alert('Get All User Success');
       });
   } catch (error) {
     alert('Get User Failed');
