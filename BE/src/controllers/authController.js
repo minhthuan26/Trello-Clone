@@ -72,6 +72,17 @@ class AuthController {
         )
     }
 
+
+  GenerateAccessToken = (user) => {
+    return jwt.sign(
+      {
+        id: user.id,
+      },
+      process.env.SECRET_KEY,
+      { expiresIn: "365d" }
+    );
+  };
+
     GenerateRefreshToken = (user) => {
         return jwt.sign(
             {
