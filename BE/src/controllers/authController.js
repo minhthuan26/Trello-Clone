@@ -57,7 +57,7 @@ class AuthController {
         id: user.id,
       },
       process.env.SECRET_KEY,
-      { expiresIn: "30s" }
+      { expiresIn: "365d" }
     );
   };
 
