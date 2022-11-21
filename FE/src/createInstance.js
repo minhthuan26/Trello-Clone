@@ -1,15 +1,23 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-
-const refreshToken = async () => {
+// function refreshToken by get accessToken at cookies in browser
+export const refreshToken = async () => {
   try {
-    const res = await axios.post(`localhost:3000/api/v1/auth/refresh`, {
-      // headers: { Cookie: accessToken },
-      withCredentials: true,
-    });
-    return res.data;
-  } catch (err) {
-    console.log(err);
+    await axios
+      .post(
+        `//localhost:3000/api/v1/auth/refresh`,
+        {},
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        const data = res.data;
+        return data;
+      });
+  } catch (error) {
+    console.log(error);
   }
 };
 export const createAxios = (user, dispatch, stateSuccess) => {
@@ -19,13 +27,23 @@ export const createAxios = (user, dispatch, stateSuccess) => {
       let date = new Date();
       const decodedToken = jwt_decode(user?.accessToken);
       if (decodedToken.exp < date.getTime() / 1000) {
-        const data = await refreshToken();
-        const refreshUser = {
-          ...user,
-          accessToken: data.accessToken,
-        };
-        dispatch(stateSuccess(refreshUser));
-        config.headers['token'] = 'Bearer ' + data.accessToken;
+        await axios
+          .post(
+            `//localhost:3000/api/v1/auth/refresh`,
+            {},
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            const refreshUser = {
+              ...user,
+              accessToken: res.data,
+            };
+            console.log(res.data);
+            dispatch(stateSuccess(refreshUser));
+            config.headers['token'] = 'Bearer ' + res.data;
+          });
       }
       return config;
     },

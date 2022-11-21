@@ -15,13 +15,18 @@ import { getUserStart, getUserFailed, getUserSuccess } from './userSlice';
 export const LoginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
   try {
-    await axios.post(`//localhost:3000/api/v1/auth/login`, user).then((res) => {
-      const result = res.data;
-      dispatch(loginSuccess(result));
-      console.log(result);
-      alert('login success');
-      navigate('/');
-    });
+    await axios
+      .post(`//localhost:3000/api/v1/auth/login`, user, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        const result = res.data;
+        dispatch(loginSuccess(result));
+        console.log(res);
+        console.log('Login Success');
+        alert('Login Success');
+        navigate('/');
+      });
   } catch (err) {
     alert(err.response.data.msg);
     dispatch(loginFailed());
@@ -36,8 +41,8 @@ export const registerUser = async (user, dispatch, navigate) => {
         const result = res.data;
         dispatch(registerSuccess(result));
         console.log(result);
-        console.log('register success');
-        alert('register success');
+        console.log('Register Success');
+        alert('Register Success');
         navigate('/login');
       });
   } catch (err) {
@@ -47,21 +52,20 @@ export const registerUser = async (user, dispatch, navigate) => {
   }
 };
 
-export const getAllUser = async (accessToken, dispatch, axiosJWT) => {
+export const getAllUser = async (accessToken, dispatch, axiosJWTgetUsers) => {
   dispatch(getUserStart());
   try {
-    await axiosJWT
+    await axiosJWTgetUsers
       .get(`//localhost:3000/api/v1/user/`, {
         headers: { token: `Bearer ${accessToken}` },
       })
       .then((res) => {
         const result = res.data;
-        dispatch(getUserSuccess(result));
         console.log(result);
-        alert('Get all user success');
+        dispatch(getUserSuccess(result));
       });
   } catch (error) {
-    alert('Get user failed');
+    alert('Get User Failed');
     dispatch(getUserFailed());
   }
 };
@@ -86,7 +90,6 @@ export const logOutUser = async (
       });
   } catch (error) {
     console.log(error);
-    // alert(error.res.data.msg);
     dispatch(logOutFailed());
   }
 };

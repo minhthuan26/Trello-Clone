@@ -5,8 +5,6 @@ class ColumnController {
      createNew = async (req, res) =>{
         try {
             const newColumn = await column.create(req.body)
-
-
             const updatedBoard = await board.findOneAndUpdate(
                 {
                     _id: newColumn.boardId

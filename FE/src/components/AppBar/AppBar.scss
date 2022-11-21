@@ -1,55 +1,162 @@
 @import '../../setting.scss';
-$appbar-bg-color: #0067a3;
+$appbar-bg-color: linear-gradient(120deg,#2980B9,#8E44AD);
 
 .navbar-app {
     height: $navbar-app-height;
-    padding-left: $gap;
+    padding: 0 $gap;
     display: flex;
     align-items: center;
     text-align: center;
-    background-color: $appbar-bg-color;
-    justify-items: normal;
-    justify-content: space-between;
+    background-color: darken($color: rgba(84, 84, 84, 0.3), $amount: 3);
+    // justify-items: normal;
+    // justify-content: space-between;
+    .trello-container {
+        max-width: 100%;
+        .app-actions {
+            display: inline-flex;
+            height: 100%;
+            width: 100%;
+            flex-direction: row;
+            align-items: center;
+            div.item {
+                padding: 6px 10px;
+                background-color: rgba(255, 255, 255, 0.3);
+                border-radius: 3px;
+                margin-left: -12px;
+                &:not(:first-child) {
+                    margin-left: 5px;
+                }
+                &:hover {
+                    cursor: pointer;
+                    background-color: rgba(255, 255, 255, 0.4);
+                }
+                &.home {
+                    i {
+                        font-size: 15px;
+                    }
+                }
+                &.search {
+                    padding: 6px 0;
+                    .group-search {
+                        height: 19px;
+                        .input-search {
+                            max-height: 100%;
+                            background-color: inherit;
+                            color: inherit;
+                            border: none;
+                            font-size: 14px;
+                            &::placeholder {
+                                color: darken($color: aliceblue, $amount: 5);
+                                opacity: 1;
+                            }
+                        }
+                        .input-icon-search {
+                            padding: 0 8px 0 0;
+                            background-color: transparent;
+                            border: none;
+                            color: inherit;
+                        }
+                    }
+                }
+            }
+        }
 
-    .logo {
-        font-size: 20px;
-        margin-left: 3px;
-        display: block;
-        cursor: pointer;
-        color: inherit;
-        text-decoration: none;
-        
-    }
-
-    .nav-actions {
-        margin-right: 15px;
-        display: flex;
-        max-height: $navbar-app-height;
-        font-size: 17px;
-        
-        .account-name {
-            padding: 12px 15px;
+        .logo {
+            font-size: 30px;
+            margin-top: 18px;
+            display: block;
             cursor: pointer;
+        }
+
+        .logo a {
+            color: #222;
             text-decoration: none;
-            color: inherit;
-            height: $navbar-app-height;
-            &:hover {
-                color: #666;
+            font-weight: bolder;
+        }
+        
+        .user-actions {
+            margin-bottom: 20px;
+            display: inline-flex;
+            height: 100%;
+            width: 100%;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            .account-name {
+                font-weight: bolder;
+                font-size: 17px;
+                padding: 12px 15px;
+                cursor: pointer;
+                text-decoration: none;
+                color: #222;
+                height: $navbar-app-height;
+                &:hover {
+                    cursor: pointer;
+                    color: rgba(255, 255, 255, 0.5);
+                }
+        
+            }
+            .logout-button {
+                border-style: none;
+                font-weight: bold;
+                color: inherit;
+                background-color: rgba(255, 255, 255, 0.3);
+                &:hover {
+                    cursor: pointer;
+                    background-color: rgba(255, 255, 255, 0.4);
+                }
             }
 
-        }
+            .link {
+                text-decoration: none;
+                font-style: none;
+                color: inherit;
+            }
 
-        .logout-button {
-            width: 80px;
-            height: 32px;
-            margin: 5px 0;
-            display: block;
-            text-decoration: none;
+            .re-button {
+                margin-left: 5px;
+                border-style: none;
+                font-weight: bold;
+                color: inherit;
+                background-color: rgba(255, 255, 255, 0.3);
+                &:hover {
+                    cursor: pointer;
+                    background-color: rgba(255, 255, 255, 0.4);
+                }
+            }
         }
     }
+
+    
 
 }
 
+
+// div.item {
+//     padding: 6px 10px;
+//     background-color: rgba(255, 255, 255, 0.3);
+//     border-radius: 3px;
+//     &:not(:first-child) {
+//         margin-left: 4px;
+//     }
+//     &:hover {
+//         cursor: pointer;
+//         background-color: rgba(255, 255, 255, 0.4);
+//     }
+//     &.user-avatar {
+//         padding: 0;
+//         background-color: transparent;
+//         img {
+//             width: 30px;
+//             height: 30px;
+//             border-radius: 50%;
+//             object-fit: cover;
+//             &:hover {
+//                 filter: brightness(120%);
+//             }
+//         }
+//     }
+// }
         
 
 
