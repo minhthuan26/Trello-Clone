@@ -3,6 +3,9 @@ const UserGoogle = require('../models/UserGoogle')
 const Refresh = require('../models/Refresh')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const { SECRET_KEY, REFRESH_KEY, APP_URL } = require('../config')
+const { MAIL_KEY } = require('../config/mailConfig')
+const mailer = require('../utilities/sendMail')
 class AuthController {
 
     ReplaceRefreshInDB = async (userId, refreshToken) => {
@@ -45,7 +48,13 @@ class AuthController {
                     email
                 })
                 // const { password, ...others } = newUser._doc
-                return res.status(201).json(newUser)
+                const emailConfirmToken = this.GenerateEmailConfirm(newUser)
+                mailer.sendMail(newUser.email, 'Confirm Email',
+                    `<b>This link will be expire after 48 hours.</b>
+                    <br>
+                    <a href='${APP_URL}api/v1/auth/verify/${emailConfirmToken}'>Please click this to confirm!!!</a>`
+                )
+                return res.status(201).json({ msg: 'You have create a new account. Please confirm email to login!' })
             }
             catch (error) {
                 return res.status(500).json({ msg: error.message })
@@ -58,7 +67,7 @@ class AuthController {
             {
                 id: user.id
             },
-            process.env.SECRET_KEY,
+            SECRET_KEY,
             { expiresIn: '30s' }
         )
     }
@@ -68,9 +77,39 @@ class AuthController {
             {
                 id: user.id
             },
-            process.env.REFRESH_KEY,
+            REFRESH_KEY,
             { expiresIn: '356d' }
         )
+    }
+
+    GenerateEmailConfirm = (user) => {
+        return jwt.sign(
+            {
+                id: user.id
+            },
+            MAIL_KEY,
+            { expiresIn: '30s' }
+        )
+    }
+
+    VerifyEmail = async (req, res, next) => {
+        const currentUser = await User.findById(req.user.id)
+        if (currentUser) {
+            await User.findByIdAndUpdate(
+                currentUser._id,
+                {
+                    active: true
+                },
+                {
+                    new: true,
+                    runValidators: true
+                }
+            )
+            return res.status(200).json({ msg: 'Email has been confirmed. Please return to login page.' })
+        }
+        else {
+            return res.status(404).json({ msg: 'Account does not exists' })
+        }
     }
 
     Login = async (req, res, next) => {
@@ -85,29 +124,34 @@ class AuthController {
                     return res.status(404).json({ msg: 'User not found' })
                 }
                 else {
-                    const validPassword = await bcrypt.compare(
-                        password,
-                        user.password
-                    )
-                    if (!validPassword) {
-                        return res.status(404).json({ msg: 'Wrong password' })
+                    if (!user.active) {
+                        return res.status(403).json({ msg: 'Please check your email and confirm to login with this account' })
                     }
                     else {
-                        const accessToken = this.GenerateAccessToken(user)
-                        const refreshToken = this.GenerateRefreshToken(user)
-                        this.ReplaceRefreshInDB(user.id, refreshToken)
-
-                        res.cookie('refreshToken', refreshToken,
-                            {
-                                httpOnly: true,
-                                sameSite: 'strict',
-                                path: '/',
-                                secure: false
-                            }
+                        const validPassword = await bcrypt.compare(
+                            password,
+                            user.password
                         )
+                        if (!validPassword) {
+                            return res.status(404).json({ msg: 'Wrong password' })
+                        }
+                        else {
+                            const accessToken = this.GenerateAccessToken(user)
+                            const refreshToken = this.GenerateRefreshToken(user)
+                            this.ReplaceRefreshInDB(user.id, refreshToken)
 
-                        const { password, ...others } = user._doc
-                        return res.status(200).json({ ...others, accessToken })
+                            res.cookie('refreshToken', refreshToken,
+                                {
+                                    httpOnly: true,
+                                    sameSite: 'strict',
+                                    path: '/',
+                                    secure: false
+                                }
+                            )
+
+                            const { password, ...others } = user._doc
+                            return res.status(200).json({ ...others, accessToken })
+                        }
                     }
                 }
             }
@@ -127,7 +171,7 @@ class AuthController {
         }
         jwt.verify(
             refreshToken,
-            process.env.REFRESH_KEY,
+            REFRESH_KEY,
             async (error, user) => {
                 if (error) {
                     return res.status(403).json({ msg: error.message })
@@ -182,10 +226,10 @@ class AuthController {
                         secure: false
                     }
                 )
-                const {password, ...others} = user._doc
+                const { password, ...others } = user._doc
                 this.ReplaceRefreshInDB(existedUserGoogle.userid, refreshToken)
 
-                return res.status(200).json({...others, accessToken})
+                return res.status(200).json({ ...others, accessToken })
             }
             catch (error) {
                 return res.status(500).json({ msg: error.message })
@@ -211,8 +255,8 @@ class AuthController {
                         }
                     )
                     this.ReplaceRefreshInDB(existedUserGoogle.userid, refreshToken)
-                    const {password, ...others} = existedUser._doc
-                    return res.status(200).json({...others, accessToken})
+                    const { password, ...others } = existedUser._doc
+                    return res.status(200).json({ ...others, accessToken })
                 }
                 catch (error) {
                     return res.status(500).json({ msg: error.message })
@@ -243,10 +287,10 @@ class AuthController {
                             secure: false
                         }
                     )
-                    const {password, ...others} = newUser._doc
-                    return res.status(201).json({...others, accessToken})
+                    const { password, ...others } = newUser._doc
+                    return res.status(201).json({ ...others, accessToken })
                 }
-                catch (error){
+                catch (error) {
                     return res.status(500).json({ msg: error.message })
                 }
             }

@@ -6,10 +6,11 @@ require('../middlewares/passportMiddleware')
 
 router.post('/register', authController.Register)
 router.post('/login', authController.Login)
-router.get('/login-google', passport.authenticate('google', { scope: ['profile', 'email'], accessType: 'offline', prompt: 'consent'}))
+router.get('/login-google', passport.authenticate('google', { scope: ['profile', 'email'], accessType: 'offline', prompt: 'consent' }))
 // router.post('/login-google', passport.authenticate('google-plus-token', authController.LoginWithGoogle))
-router.get('/login-google/callback',passport.authenticate('google', { failureRedirect: '/login-google' }), authController.LoginWithGoogle);
+router.get('/login-google/callback', passport.authenticate('google', { failureRedirect: '/login-google' }), authController.LoginWithGoogle);
 router.post('/refresh', authController.Refresh)
-router.post('/logout', authMiddleware.verify,authController.Logout)
+router.post('/logout', authMiddleware.verify, authController.Logout)
+router.get('/verify/:token', authMiddleware.verifyEmail, authController.VerifyEmail)
 
 module.exports = router

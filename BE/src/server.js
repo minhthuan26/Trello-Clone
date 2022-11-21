@@ -6,6 +6,7 @@ const route = require('./routes')
 const connectDB = require('./db/connectDB')
 const passport = require('passport')
 const session = require('express-session')
+const {DATABASE_URL, SECRET_KEY} = require('./config')
 
 const app = express()
 dotenv.config()
@@ -17,7 +18,7 @@ app.use(cors())
 app.use(cookieParser())
 
 app.use(session({
-    secret: process.env.SECRET_KEY,
+    secret: SECRET_KEY,
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false }
@@ -31,7 +32,7 @@ route(app)
 //start
 const start = async () => {
     try{
-        await connectDB(process.env.MONGO_URL)
+        await connectDB(DATABASE_URL)
         .then(() => console.log('Connected to database...'))
         .catch(error => {
             console.log(error)

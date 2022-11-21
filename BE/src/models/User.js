@@ -16,6 +16,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
         minLength: 8
+    },
+    active: {
+        type: Boolean,
+        default: false
     }
 }, {timestamps: true})
 
