@@ -28,7 +28,7 @@ function BoardContent() {
       const boardId = "635e30fbb1a6972cdc26aeb9"
       fetchBoardDetails(boardId).then(board => {
         setBoard(board)
-        setColumns(mapOrder(board.columns, board.columnOrder, boardId))
+        setColumns(mapOrder(board.columns, board.columnOrder, board._id))
       })
     }, [])
 
@@ -42,6 +42,7 @@ function BoardContent() {
     // }, [])
 
     //focus con trỏ vào input
+    
     useEffect(() => {
       if(newColumnInputRef && newColumnInputRef.current){
         newColumnInputRef.current.focus()
@@ -86,10 +87,22 @@ function BoardContent() {
       const newColumntoAdd = {
         // id: Math.random().toString(36).substring(2, 5), 
         boardId: board._id,
-        title: newColumnTitle.trim(),
+        title: newColumnTitle.trim()
         // cardOrder: [],
         // cards: []
       }
+
+      // let newColumns = [...columns]
+      //   newColumns.push(newColumntoAdd) //đẩy Column thêm mới vào cuối mảng chứa các Column
+
+      //   let newBoards = { ...board }
+      //   newBoards.columnOrder = newColumns.map(c => c._id)
+      //   newBoards.columns = newColumns
+
+      //   setColumns(newColumns)
+      //   setBoard(newBoards)
+      //   setNewColumnTitle('')
+      //   toggleOpenNewColumnForm()
 
       //callAPI create column
       createNewColumn(newColumntoAdd).then(column => {

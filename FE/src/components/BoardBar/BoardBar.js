@@ -19,16 +19,16 @@ function BoardBar() {
                            <div className="divider"></div>
 
                            <div className="item member-avatar">
-                              <img src="https://trungquandev.com/wp-content/uploads/2021/01/trungquandev-avatar-2021.jpg" 
-                              alt="avatar-trungquandev" title="trungquandev" />
-                              <img src="https://trungquandev.com/wp-content/uploads/2018/04/trungquandev-avatar.jpeg" 
-                              alt="avatar-trungquandev" title="trungquandev" />
-                              <img src="https://trungquandev.com/wp-content/uploads/2019/03/trungquandev-avatar-01-scaled.jpg" 
-                              alt="avatar-trungquandev" title="trungquandev" />
-                              <img src="https://trungquandev.com/wp-content/uploads/2017/03/aboutme.jpg" 
-                              alt="avatar-trungquandev" title="trungquandev" />
+                              <img src="https://img.meta.com.vn/Data/image/2022/05/14/meme-meo-bua-2.jpg" 
+                              alt="avatar" title="avatar1" />
+                              <img src="https://cafefcdn.com/thumb_w/650/203337114487263232/2022/3/3/photo1646280815645-1646280816151764748403.jpg" 
+                              alt="avatar" title="avatar2" />
+                              <img src="https://photo-cms-kienthuc.epicdn.me/zoom/800/uploaded/hoangthao/2022_03_18/bieu-cam-dang-yeu-cua-nhung-con-meo-cung-khien-ban-tan-chay.jpg" 
+                              alt="avatar" title="avatar3" />
+                              <img src="https://codersera.com/blog/wp-content/uploads/2019/07/BLOG-23-L-3.jpg" 
+                              alt="avatar" title="avatar4" />
                               <img src="https://trungquandev.com/wp-content/uploads/2019/06/trungquandev-cat-avatar.png" 
-                              alt="avatar-trungquandev" title="trungquandev" />
+                              alt="avatar" title="avatar5" />
                               <span className="more-members">+7</span>
                               <span className="invite">Invite</span>
                            </div>

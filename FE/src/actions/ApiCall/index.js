@@ -13,19 +13,19 @@ export const fetchBoardDetails = async (id) => {
 
 export const createNewColumn = async (data) => {
     const request = await axios.post(`${API_ROOT}/api/v1/columns/create`, data)
+    // console.log(request.data)
+    // window.location.reload(true);
+    return request.data
+}
+
+//update or remove column
+export const updateColumn = async (id, data) => {
+    const request = await axios.patch(`${API_ROOT}/api/v1/columns/update/${id}`, data)
     console.log(request)
     return request.data
 }
 
-// //update or remove column
-// export const updateColumn = async (id, data) => {
-//     const request = await axios.patch(`${API_ROOT}/api/v1/columns/update/${id}`, data)
-//     console.log(request)
-//     return request.data
-// }
-
 export const createNewCard = async (data) => {
     const request = await axios.post(`${API_ROOT}/api/v1/cards/create`, data)
-    console.log(request)
     return request.data
 }
