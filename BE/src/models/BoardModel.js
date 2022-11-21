@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const connectDB = require('./../db/connectDB')
 const BoardSchema = mongoose.Schema({
     title: {
         type: String,
@@ -21,6 +20,7 @@ const BoardSchema = mongoose.Schema({
     // },
     createBy: {
         type: mongoose.Types.ObjectId,
+        required:true,
         unique: true,
     },
     _destroy: {
