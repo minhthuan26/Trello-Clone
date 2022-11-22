@@ -8,39 +8,39 @@ const { MAIL_KEY } = require('../config/mailConfig')
 const mailer = require('../utilities/sendMail')
 
 class AuthController {
-  ReplaceRefreshInDB = async (userId, refreshToken) => {
-    const oldRefreshToken = await Refresh.findOne({ createBy: userId });
-    if (oldRefreshToken) {
-      await Refresh.findOneAndUpdate(
-        {
-          createBy: userId,
-        },
-        {
-          key: refreshToken,
-        },
-        {
-          new: true,
-          runValidators: true,
+    ReplaceRefreshInDB = async (userId, refreshToken) => {
+        const oldRefreshToken = await Refresh.findOne({ createBy: userId });
+        if (oldRefreshToken) {
+            await Refresh.findOneAndUpdate(
+                {
+                    createBy: userId,
+                },
+                {
+                    key: refreshToken,
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            );
+        } else {
+            await Refresh.create({
+                key: refreshToken,
+                createBy: userId,
+            });
         }
-      );
-    } else {
-      await Refresh.create({
-        key: refreshToken,
-        createBy: userId,
-      });
-    }
-  };
+    };
 
-  Register = async (req, res, next) => {
-    const { username, password, email } = req.body;
-    if (!username || !password || !email) {
-      return res
-        .status(400)
-        .json({ msg: "Username, password and email could not be null!" });
-    } else {
-      try {
-        const salt = await bcrypt.genSalt(10);
-        const passwordHash = await bcrypt.hash(password, salt);
+    Register = async (req, res, next) => {
+        const { username, password, email } = req.body;
+        if (!username || !password || !email) {
+            return res
+                .status(400)
+                .json({ msg: "Username, password and email could not be null!" });
+        } else {
+            try {
+                const salt = await bcrypt.genSalt(10);
+                const passwordHash = await bcrypt.hash(password, salt);
                 const newUser = await User.create({
                     username,
                     password: passwordHash,
@@ -50,8 +50,8 @@ class AuthController {
                 const emailConfirmToken = this.GenerateEmailConfirm(newUser)
                 mailer.sendMail(newUser.email, 'Confirm Email',
                     `<b>This link will be expire after 48 hours.</b>
-                    <br>
-                    <a href='${APP_URL}api/v1/auth/verify/${emailConfirmToken}'>Please click this to confirm!!!</a>`
+                        <br>
+                        <a href='${APP_URL}api/v1/auth/verify/${emailConfirmToken}'>Please click this to confirm!!!</a>`
                 )
                 return res.status(201).json({ msg: 'You have create a new account. Please confirm email to login!' })
             }
@@ -60,28 +60,17 @@ class AuthController {
             }
         }
     }
-  };
-  
+
+
     GenerateAccessToken = (user) => {
         return jwt.sign(
             {
-                id: user.id
+                id: user.id,
             },
-            SECRET_KEY,
-            { expiresIn: '30s' }
-        )
-    }
-
-
-  GenerateAccessToken = (user) => {
-    return jwt.sign(
-      {
-        id: user.id,
-      },
-      process.env.SECRET_KEY,
-      { expiresIn: "365d" }
-    );
-  };
+            process.env.SECRET_KEY,
+            { expiresIn: "30s" }
+        );
+    };
 
     GenerateRefreshToken = (user) => {
         return jwt.sign(
@@ -89,7 +78,7 @@ class AuthController {
                 id: user.id
             },
             REFRESH_KEY,
-            { expiresIn: '356d' }
+            { expiresIn: '5m' }
         )
     }
 
@@ -122,6 +111,8 @@ class AuthController {
             return res.status(404).json({ msg: 'Account does not exists' })
         }
     }
+
+
 
     Login = async (req, res, next) => {
         const { username, password } = req.body
@@ -166,12 +157,11 @@ class AuthController {
                     }
                 }
             }
+            catch (error) {
+                return res.status(500).json({ msg: error.message });
+            }
         }
-      } catch (error) {
-        return res.status(500).json({ msg: error.message });
-      }
     }
-  };
 
 
     Refresh = async (req, res, next) => {
@@ -213,46 +203,17 @@ class AuthController {
                     }
                 )
                 return res.status(200).json(newAccessToken)
-            })
+            }
+        )
     }
-    if (!(await Refresh.findOne({ refreshToken }))) {
-      return res.status(403).json({ msg: "Token is not valid" });
-    }
-    jwt.verify(refreshToken, process.env.REFRESH_KEY, async (error, user) => {
-      if (error) {
-        return res.status(403).json({ msg: error.message });
-      }
-      const newAccessToken = this.GenerateAccessToken(user);
-      const newRefreshToken = this.GenerateRefreshToken(user);
-      await Refresh.findOneAndUpdate(
-        {
-          createBy: user.id,
-        },
-        {
-          key: newRefreshToken,
-        },
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
 
-      res.cookie("refreshToken", newRefreshToken, {
-        httpOnly: true,
-        sameSite: "strict",
-        path: "/",
-        secure: false,
-      });
-      return res.status(200).json(newAccessToken);
-    });
-  };
+    Logout = async (req, res, next) => {
+        await Refresh.findOneAndDelete(req.cookies.refreshToken);
+        res.clearCookie("refreshToken");
+        return res.status(200).json({ msg: "Logged Out" });
+    };
 
-  Logout = async (req, res, next) => {
-    await Refresh.findOneAndDelete(req.cookies.refreshToken);
-    res.clearCookie("refreshToken");
-    return res.status(200).json({ msg: "Logged Out" });
-  };
-
+    LoginWithGoogle = async (req, res, next) => {
         const existedUserGoogle = await UserGoogle.findOne({ providerid: req.providerId })
         //da tung dang nhap bang gg
         if (existedUserGoogle) {
@@ -312,7 +273,8 @@ class AuthController {
                     const newUser = await User.create({
                         username: req.user.username,
                         password: passwordHash,
-                        email: req.user.username
+                        email: req.user.username,
+                        active: true
                     })
                     await UserGoogle.create({
                         providerid: req.providerId,
@@ -337,9 +299,7 @@ class AuthController {
                 }
             }
         }
-      }
     }
-  };
 }
 
 module.exports = new AuthController();
