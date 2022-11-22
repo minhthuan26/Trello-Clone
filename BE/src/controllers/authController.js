@@ -6,42 +6,41 @@ const bcrypt = require('bcrypt')
 const { SECRET_KEY, REFRESH_KEY, APP_URL, PASSWORD_KEY } = require('../config')
 const { MAIL_KEY } = require('../config/mailConfig')
 const mailer = require('../utilities/sendMail')
-class AuthController {
 
+class AuthController {
     ReplaceRefreshInDB = async (userId, refreshToken) => {
-        const oldRefreshToken = await Refresh.findOne({ createBy: userId })
+        const oldRefreshToken = await Refresh.findOne({ createBy: userId });
         if (oldRefreshToken) {
             await Refresh.findOneAndUpdate(
                 {
-                    createBy: userId
+                    createBy: userId,
                 },
                 {
-                    key: refreshToken
+                    key: refreshToken,
                 },
                 {
                     new: true,
-                    runValidators: true
+                    runValidators: true,
                 }
             )
-        }
-        else {
+        } else {
             await Refresh.create({
                 key: refreshToken,
-                createBy: userId
+                createBy: userId,
             })
         }
     }
 
     Register = async (req, res, next) => {
-        const { username, password, email } = req.body
+        const { username, password, email } = req.body;
         if (!username || !password || !email) {
-            return res.status(400).json({ msg: 'Username, password and email could not be null!' })
-        }
-        else {
+            return res
+                .status(400)
+                .json({ msg: "Username, password and email could not be null!" });
+        } else {
             try {
-                const salt = await bcrypt.genSalt(10)
-                const passwordHash = await bcrypt.hash(password, salt)
-
+                const salt = await bcrypt.genSalt(10);
+                const passwordHash = await bcrypt.hash(password, salt);
                 const newUser = await User.create({
                     username,
                     password: passwordHash,
@@ -53,6 +52,7 @@ class AuthController {
                     `<b>This link will be expire after 24 hours.</b>
                     <br>
                     <a href='${APP_URL}api/v1/auth/verify/${emailConfirmToken}'>Please click this to confirm!!!</a>`
+
                 )
                 return res.status(201).json({ msg: 'You have create a new account. Please confirm email to login!' })
             }
@@ -135,7 +135,7 @@ class AuthController {
     GenerateAccessToken = (user) => {
         return jwt.sign(
             {
-                id: user.id
+                id: user.id,
             },
             SECRET_KEY,
             { expiresIn: '5m' }
@@ -246,7 +246,7 @@ class AuthController {
                 }
             }
             catch (error) {
-                return res.status(500).json({ msg: error.message })
+                return res.status(500).json({ msg: error.message });
             }
         }
     }
@@ -290,17 +290,17 @@ class AuthController {
                     }
                 )
                 return res.status(200).json(newAccessToken)
-            })
+            }
+        )
     }
 
     Logout = async (req, res, next) => {
-        await Refresh.findOneAndDelete(req.cookies.refreshToken)
-        res.clearCookie('refreshToken')
-        return res.status(200).json({ msg: 'Logged out' })
-    }
+        await Refresh.findOneAndDelete(req.cookies.refreshToken);
+        res.clearCookie("refreshToken");
+        return res.status(200).json({ msg: "Logged Out" });
+    };
 
     LoginWithGoogle = async (req, res, next) => {
-
         const existedUserGoogle = await UserGoogle.findOne({ providerid: req.providerId })
         //da tung dang nhap bang gg
         if (existedUserGoogle) {
@@ -360,7 +360,8 @@ class AuthController {
                     const newUser = await User.create({
                         username: req.user.username,
                         password: passwordHash,
-                        email: req.user.username
+                        email: req.user.username,
+                        active: true
                     })
                     await UserGoogle.create({
                         providerid: req.providerId,
@@ -388,4 +389,4 @@ class AuthController {
     }
 }
 
-module.exports = new AuthController
+module.exports = new AuthController();
