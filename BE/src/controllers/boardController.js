@@ -26,8 +26,8 @@ class BoardController {
                     let title = board.title
                     return {id, title}
                 })
-                console.log(result);
-        } catch (error) {
+                return res.status(200).json(result)
+            } catch (error) {
             res.status(500).json({
                 errors: error.message
             })
