@@ -18,11 +18,15 @@ class BoardController {
 
     getFullBoards = async (req, res) =>{
         try {
-            console.log(req.user.id)
                 const userId = req.user.id
-                const result = await board.findOne({createBy:userId})
-                res.status(200).json(result)
-                return result._id.toString()            
+                const boards = await board.find({createBy:userId})
+                // res.status(200).json(result)
+                const result = boards.map(board => {
+                    let id = board._id.toString()
+                    let title = board.title
+                    return {id, title}
+                })
+                console.log(result);
         } catch (error) {
             res.status(500).json({
                 errors: error.message
