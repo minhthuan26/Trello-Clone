@@ -7,12 +7,13 @@ router.route('/create')
     // .get((req, res) => console.log('GET board'))
     .post(authMiddleware.verify, boardController.createNew)
 
+router.route('/')
+    .get(authMiddleware.verify, boardController.getFullBoards)
 
 router.route('/:id')
     .get(authMiddleware.verify,boardController.getBoardDetail)
     
-router.route('/test/test')
-    .get(authMiddleware.verify, boardController.getFullBoards)
+
 
 
 module.exports = router
