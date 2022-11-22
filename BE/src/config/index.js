@@ -6,5 +6,6 @@ module.exports = {
     REFRESH_KEY: process.env.REFRESH_KEY,
     GOOGLE_CLIENT: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-    APP_URL: process.env.APP_URL
+    APP_URL: process.env.APP_URL,
+    PASSWORD_KEY: process.env.PASSWORD_KEY
 }

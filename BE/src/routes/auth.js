@@ -9,8 +9,11 @@ router.post('/login', authController.Login)
 router.get('/login-google', passport.authenticate('google', { scope: ['profile', 'email'], accessType: 'offline', prompt: 'consent' }))
 // router.post('/login-google', passport.authenticate('google-plus-token', authController.LoginWithGoogle))
 router.get('/login-google/callback', passport.authenticate('google', { failureRedirect: '/login-google' }), authController.LoginWithGoogle);
-router.post('/refresh', authController.Refresh)
+router.post('/refresh', authController.RefreshToken)
 router.post('/logout', authMiddleware.verify, authController.Logout)
-router.get('/verify/:token', authMiddleware.verifyEmail, authController.VerifyEmail)
+router.post('/reset-password', authController.ResetPassword)
+router.get('/verify/:token', authMiddleware.verifyActiveEmail, authController.VerifyActiveEmail)
+router.get('/reset-password/:token', authMiddleware.verifyResetPasswordEmail, authController.VerifyResetPasswordEmail)
+router.get('/resend-email-confirm', authController.ResendConfirmEmail)
 
 module.exports = router
