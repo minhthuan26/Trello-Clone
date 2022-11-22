@@ -3,7 +3,7 @@ const UserGoogle = require('../models/UserGoogle')
 const Refresh = require('../models/Refresh')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const { SECRET_KEY, REFRESH_KEY, APP_URL } = require('../config')
+const { SECRET_KEY, REFRESH_KEY, APP_URL, PASSWORD_KEY } = require('../config')
 const { MAIL_KEY } = require('../config/mailConfig')
 const mailer = require('../utilities/sendMail')
 class AuthController {
@@ -50,7 +50,7 @@ class AuthController {
                 // const { password, ...others } = newUser._doc
                 const emailConfirmToken = this.GenerateEmailConfirm(newUser)
                 mailer.sendMail(newUser.email, 'Confirm Email',
-                    `<b>This link will be expire after 48 hours.</b>
+                    `<b>This link will be expire after 24 hours.</b>
                     <br>
                     <a href='${APP_URL}api/v1/auth/verify/${emailConfirmToken}'>Please click this to confirm!!!</a>`
                 )
@@ -62,13 +62,83 @@ class AuthController {
         }
     }
 
+    ResetPassword = async (req, res, next) => {
+        const emailAddress = req.body.email
+        const password = req.body.password
+        const confirmPassword = req.body.confirmPassword
+
+        if(!emailAddress || !password || !confirmPassword){
+            return res.status(400).json({msg: 'Email, password and confirm password could not be null.'})
+        }
+
+        if(password != confirmPassword){
+            return res.status(403).json({msg: 'Password and confirm password not match.'})
+        }
+
+        const user = await User.findOne({email: emailAddress})
+        if(user){
+            if(user.active){
+
+                const salt = await bcrypt.genSalt(10)
+                const passwordHash = await bcrypt.hash(password, salt)
+
+                const emailConfirmToken = jwt.sign(
+                    {
+                        id: user.id,
+                        password: passwordHash
+                    },
+                    PASSWORD_KEY,
+                    { expiresIn: '24h' }
+                )
+                
+                mailer.sendMail(user.email, 'Reset Password',
+                    `<b>This link will be expire after 24 hours.</b>
+                    <br>
+                    <a href='${APP_URL}api/v1/auth/reset-password/${emailConfirmToken}'>Please click this to confirm!!!</a>`
+                )
+                return res.status(201).json({ msg: 'We have send you an email, please check and click to reset your password.' })
+            }
+            else{
+                return res.status(403).json({msg:'This account is not active.'})
+            }
+        }
+        else{
+            return res.status(404).json({msg:'This email does not belong to any account.'})
+        }
+    }
+
+    ResendConfirmEmail = async (req, res, next) => {
+        const emailAddress = req.body.email
+        if(emailAddress){
+            const user = await User.findOne({email: emailAddress})
+            if(user){
+                if(!user.active){
+                    const emailConfirmToken = this.GenerateEmailConfirm(user)
+                    mailer.sendMail(newUser.email, 'Confirm Email',
+                        `<b>This link will be expire after 24 hours.</b>
+                        <br>
+                        <a href='${APP_URL}api/v1/auth/verify/${emailConfirmToken}'>Please click this to confirm!!!</a>`
+                    )
+                    return res.status(201).json({ msg: 'We have resend you a new email, please check and click to active your account.' })
+                }
+                else{
+                    return res.status(403).json({msg:'This account has already active.'})
+                }
+            }
+            else{
+                return res.status(404).json({msg:'This email does not belong to any account.'})
+            }
+        }
+        return res.status(403).json({msg:'Please provide your email of account to resend token.'})
+    }
+
     GenerateAccessToken = (user) => {
         return jwt.sign(
             {
                 id: user.id
             },
             SECRET_KEY,
-            { expiresIn: '30s' }
+            { expiresIn: '5m' }
         )
     }
 
@@ -78,7 +148,7 @@ class AuthController {
                 id: user.id
             },
             REFRESH_KEY,
-            { expiresIn: '356d' }
+            { expiresIn: '30m' }
         )
     }
 
@@ -88,17 +158,17 @@ class AuthController {
                 id: user.id
             },
             MAIL_KEY,
-            { expiresIn: '30s' }
+            { expiresIn: '24h' }
         )
     }
 
-    VerifyEmail = async (req, res, next) => {
+    VerifyActiveEmail = async (req, res, next) => {
         const currentUser = await User.findById(req.user.id)
         if (currentUser) {
             await User.findByIdAndUpdate(
                 currentUser._id,
                 {
-                    active: true
+                    active: true,
                 },
                 {
                     new: true,
@@ -106,6 +176,26 @@ class AuthController {
                 }
             )
             return res.status(200).json({ msg: 'Email has been confirmed. Please return to login page.' })
+        }
+        else {
+            return res.status(404).json({ msg: 'Account does not exists' })
+        }
+    }
+
+    VerifyResetPasswordEmail = async (req, res, next) => {
+        const currentUser = await User.findById(req.user.id)
+        if (currentUser) {
+            await User.findByIdAndUpdate(
+                currentUser._id,
+                {
+                    password: req.user.password
+                },
+                {
+                    new: true,
+                    runValidators: true
+                }
+            )
+            return res.status(200).json({ msg: 'Your password has been reset. Please return to login page.' })
         }
         else {
             return res.status(404).json({ msg: 'Account does not exists' })
@@ -161,7 +251,7 @@ class AuthController {
         }
     }
 
-    Refresh = async (req, res, next) => {
+    RefreshToken = async (req, res, next) => {
         const refreshToken = req.cookies.refreshToken
         if (!refreshToken) {
             return res.status(401).json({ msg: 'Unauthentic' })
