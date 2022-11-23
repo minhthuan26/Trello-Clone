@@ -86,7 +86,6 @@ function Column(props) {
       onUpdateColumnState(newColumn); //dùng lại hàm onUpdateColumnState cho chức năng thêm mới và cập nhật card vào Column
       setNewCardTitle('');
       toggleOpenNewCardForm();
-      window.location.reload(false);
     });
   };
 

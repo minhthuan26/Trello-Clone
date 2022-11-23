@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { API_ROOT } from '../../uitilities/constants';
 
-export const fetchBoardDetails = async (id) => {
-  const request = await axios.get(`${API_ROOT}/api/v1/boards/${id}`);
+export const fetchBoardDetails = async (id, accessToken) => {
+  const request = await axios.get(`${API_ROOT}/api/v1/boards/${id}`, {
+    headers: { Token: `Bearer ${accessToken}` },
+  });
   const data = request.data;
   const dataArray = data[0];
   return dataArray;
@@ -25,5 +27,6 @@ export const updateColumn = async (id, data) => {
 
 export const createNewCard = async (data) => {
   const request = await axios.post(`${API_ROOT}/api/v1/cards/create`, data);
+  window.location.reload(false);
   return request.data;
 };
