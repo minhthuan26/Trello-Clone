@@ -30,29 +30,24 @@ class CardController {
     }   
 
     changeStatus = async (req, res) =>{
+
         try {
-            const find = await card.findOne({_id: req.params.id})
-            if(find.status == false){
-                find.status=true
-            }
-            else
-            {
-                find.status = false
-            }
-
-            await card.findOneAndUpdate(
-                
-                    req.params.id
-                ,
-                find.status,
+            const updateCard = await card.findOne({_id: req.params.id})
+            if(updateCard){
+                await card.findOneAndUpdate(
+                    {_id: req.params.id},
+                    {
+                        status : !updateCard.status
+                },
                 {
-                    new: true, //return ve document update thay vi document original
-                    // upsert: true // neu khong co thi insert
+                    new: true,
                     newValidate:true,
-                }
-            )
-
-            res.status(200).json({ msg: 'change Status success' })
+                })
+                return res.status(200).json({ msg: 'change Status success' })
+            }
+            else{
+                res.status(404).json({msg:'This card is not existed'})
+            }
             // console.log(find)
         } catch (error) {
             res.status(500).json({
