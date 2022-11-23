@@ -22,16 +22,15 @@ const CardSchema = mongoose.Schema({
         unique: true,
         default: null
     },
-    // createAt: {
-    //     type: Date,
-    //     unique: true,
-    //     default: Date.now()
-    // },
-    // updateAt: {
-    //     type: Date,
-    //     unique: true,
-    //     default: null
-    // },
+    status: {
+        type: Boolean,
+        default: false
+    },
+    time: {
+        type: String,
+        unique: true,
+        required:true
+    },
     _destroy: {
         type: Boolean,
         default: false

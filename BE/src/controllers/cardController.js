@@ -1,11 +1,13 @@
+const { findOne } = require('../models/cardModel')
 const card = require('../models/cardModel')
 const column = require('../models/ColumnModel')
 
 class CardController {
      createNew = async (req, res) =>{
         try {
+            // const dateOfColumn = await column.findOne({_id:req.body.columnId})
+            // const newCard = await card.create(req.body)
             const newCard = await card.create(req.body)
-
             await column.findOneAndUpdate(
                 {
                     _id: newCard.columnId
@@ -19,6 +21,39 @@ class CardController {
             ) 
 
             res.status(200).json(newCard)
+            console.log(dateOfColumn.date.getDate())
+        } catch (error) {
+            res.status(500).json({
+                errors: error.message
+            })
+        }
+    }   
+
+    changeStatus = async (req, res) =>{
+        try {
+            const find = await card.findOne({_id: req.params.id})
+            if(find.status == false){
+                find.status=true
+            }
+            else
+            {
+                find.status = false
+            }
+
+            await card.findOneAndUpdate(
+                
+                    req.params.id
+                ,
+                find.status,
+                {
+                    new: true, //return ve document update thay vi document original
+                    // upsert: true // neu khong co thi insert
+                    newValidate:true,
+                }
+            )
+
+            res.status(200).json({ msg: 'change Status success' })
+            // console.log(find)
         } catch (error) {
             res.status(500).json({
                 errors: error.message

@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 const { SECRET_KEY, REFRESH_KEY, APP_URL } = require('../config')
 const { MAIL_KEY } = require('../config/mailConfig')
 const mailer = require('../utilities/sendMail')
+const board = require('../models/BoardModel')
 
 class AuthController {
     ReplaceRefreshInDB = async (userId, refreshToken) => {
@@ -53,6 +54,7 @@ class AuthController {
                         <br>
                         <a href='${APP_URL}api/v1/auth/verify/${emailConfirmToken}'>Please click this to confirm!!!</a>`
                 )
+
                 return res.status(201).json({ msg: 'You have create a new account. Please confirm email to login!' })
             }
             catch (error) {
@@ -105,6 +107,10 @@ class AuthController {
                     runValidators: true
                 }
             )
+            await board.create({
+                title: currentUser.username,
+                createBy: currentUser._id
+            })
             return res.status(200).json({ msg: 'Email has been confirmed. Please return to login page.' })
         }
         else {

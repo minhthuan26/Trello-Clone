@@ -18,6 +18,7 @@ class ColumnController {
             )
 
             // const updatedBoard = await board.pushColumnOrder(boardId, newColumnId)
+            // console.log(newColumn.date.toString())
             res.status(200).json(newColumn)
         } catch (error) {
             res.status(500).json({
