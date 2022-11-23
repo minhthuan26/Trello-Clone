@@ -56,10 +56,10 @@ function AppBar() {
                   <div className="item home">
                     <i className="fa fa-home" />
                   </div>
-                  <div className="item boards">
+                  {/* <div className="item boards">
                     <i className="fa fa-columns" />
                     &nbsp;&nbsp;<strong>Boards</strong>
-                  </div>
+                  </div> */}
                   <div className="item search">
                     <InputGroup className="group-search">
                       <FormControl
@@ -78,7 +78,7 @@ function AppBar() {
                 <div className="logo">
                   <Link to={'/'}>
                     {/* eslint-disable-next-line */}
-                    <a className="page-name">Trello</a>
+                    <a className="page-name">Trello-Clone</a>
                   </Link>
                 </div>
               </Col>
