@@ -114,7 +114,7 @@ class AuthController {
             if(user){
                 if(!user.active){
                     const emailConfirmToken = this.GenerateEmailConfirm(user)
-                    mailer.sendMail(newUser.email, 'Confirm Email',
+                    mailer.sendMail(user.email, 'Confirm Email',
                         `<b>This link will be expire after 24 hours.</b>
                         <br>
                         <a href='${APP_URL}api/v1/auth/verify/${emailConfirmToken}'>Please click this to confirm!!!</a>`
