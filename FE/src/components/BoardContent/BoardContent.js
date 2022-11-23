@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux';
 
 function BoardContent() {
   const user = useSelector((state) => state.auth.login.currentUser);
-
+  const accessToken = user?.accessToken;
   const [board, setBoard] = useState({});
   const [columns, setColumns] = useState([]);
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
@@ -31,8 +31,9 @@ function BoardContent() {
 
   //call API get full board
   useEffect(() => {
-    const boardId = '635e30fbb1a6972cdc26aeb9';
-    fetchBoardDetails(boardId).then((board) => {
+    const boardId = '637b22b7995af06455f39ab7';
+    //goi api getFullboard(accessToken) => boardid
+    fetchBoardDetails(boardId, accessToken).then((board) => {
       setBoard(board);
       setColumns(mapOrder(board.columns, board.columnOrder, board._id));
     });

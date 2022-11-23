@@ -65,7 +65,7 @@ export const getAllUser = async (accessToken, dispatch, axiosJWTgetUsers) => {
         dispatch(getUserSuccess(result));
       });
   } catch (error) {
-    alert('Get User Failed');
+    // alert('Get User Failed');
     dispatch(getUserFailed());
   }
 };
