@@ -14,6 +14,12 @@ const ColumnSchema = mongoose.Schema({
         maxLength: 20 
 
     },
+    date: {
+        type: Date,
+        unique: true,
+        required: true,
+        default: Date.now
+    },
     cardOrder: {
         type: Array,
         unique: true,

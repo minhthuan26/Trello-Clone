@@ -2,19 +2,19 @@ const board = require('../models/BoardModel')
 
 const mongoose = require('mongoose')
 class BoardController {
-     createNew = async (req, res) =>{
-        try {
-                const userId = req.user.id
-                const result = await board.create({title: req.body.title,createBy:mongoose.Types.ObjectId(userId)})
-                console.log(result)
-                res.status(200).json(result)
+    //  createNew = async (req, res) =>{
+    //     try {
+    //             const userId = req.user.id
+    //             const result = await board.create({title: req.body.title,createBy:mongoose.Types.ObjectId(userId)})
+    //             console.log(result)
+    //             res.status(200).json(result)
 
-        } catch (error) {
-            res.status(500).json({
-                errors: error.message
-            })
-        }
-    }
+    //     } catch (error) {
+    //         res.status(500).json({
+    //             errors: error.message
+    //         })
+    //     }
+    // }
 
     getFullBoards = async (req, res) =>{
         try {
