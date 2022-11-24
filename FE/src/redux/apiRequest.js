@@ -93,3 +93,20 @@ export const logOutUser = async (
     dispatch(logOutFailed());
   }
 };
+
+export const resetPassword = async (newInfo, navigate) => {
+  try {
+    await axios
+      .post(`//localhost:3000/api/v1/auth/reset-password`, newInfo, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data);
+        alert(res.data.msg);
+        navigate('/login');
+      });
+  } catch (error) {
+    console.log(error);
+    alert(error.response.data.msg);
+  }
+};

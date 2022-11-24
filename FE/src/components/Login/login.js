@@ -44,12 +44,21 @@ const LoginForm = () => {
         <button className="loginButton" type="submit">
           Login
         </button>
-        <div className="notAMember">
-          Not a member?
-          <Link to={'/register'}>
-            {/* eslint-disable-next-line */}
-            <a className="signup">Register</a>
-          </Link>
+        <div className="notformember">
+          <div className="notAMember">
+            Not a member ?
+            <Link to={'/register'}>
+              {/* eslint-disable-next-line */}
+              <a className="signup">Register</a>
+            </Link>
+          </div>
+          <div className="notAMember">
+            Forgot password ?
+            <Link to={'/forgotPassword'}>
+              {/* eslint-disable-next-line */}
+              <a className="signup">Click here</a>
+            </Link>
+          </div>
         </div>
       </form>
     </div>

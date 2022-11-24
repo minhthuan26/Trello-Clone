@@ -78,7 +78,7 @@ function AppBar() {
                 <div className="logo">
                   <Link to={'/'}>
                     {/* eslint-disable-next-line */}
-                    <a className="page-name">Trello-Clone</a>
+                    <a className="page-name">Task Manager</a>
                   </Link>
                 </div>
               </Col>
