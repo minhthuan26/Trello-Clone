@@ -6,5 +6,7 @@ router.route('/create')
     // .get((req, res) => console.log('GET board'))
     .post(cardController.createNew)
 
+router.route('/change-status/:id')
+    .patch(cardController.changeStatus)
     
 module.exports = router

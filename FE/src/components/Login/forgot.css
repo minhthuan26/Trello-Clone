@@ -1,12 +1,4 @@
-body {
-    margin: 0;
-    padding: 0;
-    background:linear-gradient(120deg,#2980B9,#8E44AD);
-    height: 100vh;
-    /* overflow: hidden; */
-}
-
-.login1{
+.register1{
     position: absolute;
     width: 400px;
     top: 50%;
@@ -16,13 +8,13 @@ body {
     border-radius: 10px;
 }
 
-.login1 h1{
+.register1 h1{
     text-align: center;
     padding: 20px 0 20px 0 ;
     border-bottom: 1px solid silver;
 }
 
-.formSubmit{
+.formSubmitRegister{
     padding: 10px 30px;
     box-sizing: border-box;
 }
@@ -59,7 +51,7 @@ body {
     color: #2980B9;    
 }
 
-.loginButton{
+.signupButton{
     width: 100%;
     height: 40px;
     background: #2691d9;
@@ -71,24 +63,18 @@ body {
     outline: none;
     color: white;
 }
-.loginButton:hover{
+.signupButton:hover{
     border-color: #2691d9;
     transition: .5s;
 }
 
-.notAMember{
+.already{
+    margin-top: 10px;
     font-size: 20px;
     text-align: center;
-    color: #666666; 
+    color: #666666;
 }
-.notAMember a {
+.already a {
     color:#2691d9;
     text-decoration: none;
-}
-.notformember{
-    margin-top: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
 }
