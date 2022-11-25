@@ -170,7 +170,7 @@ class AuthController {
             await User.findByIdAndUpdate(
                 currentUser._id,
                 {
-                    active: true,
+                    active: !currentUser.active,
                 },
                 {
                     new: true,

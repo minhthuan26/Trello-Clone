@@ -7,23 +7,34 @@ class CardController {
         try {
             // const dateOfColumn = await column.findOne({_id:req.body.columnId})
             // const newCard = await card.create(req.body)
-            const newCard = await card.create(req.body)
-            await column.findOneAndUpdate(
-                {
-                    _id: newCard.columnId
-                },
-                {
-                    $push: {cardOrder: newCard._id}
-                },
-                {
-                    returnOriginal: false  
-                }
-            ) 
-
-            res.status(200).json(newCard)
-            console.log(dateOfColumn.date.getDate())
+            const {boardId, columnId, title, time, status} = req.body
+            if(!boardId || !columnId || !title, !time || !status)
+                return res.status(403).json({msg: 'Board Id, column Id, title, time and status could not be null'})
+            const newCard = await card.create({
+                boardId,
+                columnId,
+                title,
+                time,
+                status
+            })
+            if(newCard){
+                await column.findOneAndUpdate(
+                    {
+                        _id: newCard.columnId
+                    },
+                    {
+                        $push: {cardOrder: newCard._id}
+                    },
+                    {
+                        returnOriginal: false  
+                    }
+                ) 
+    
+                res.status(201).json(newCard)
+            }
+            return res.status(500).json({msg: 'Something went wrong while creating new card'})
         } catch (error) {
-            res.status(500).json({
+            return res.status(500).json({
                 errors: error.message
             })
         }
