@@ -4,6 +4,7 @@ import './Column.scss';
 import { mapOrder } from '../../uitilities/sort';
 import { Container, Draggable } from 'react-smooth-dnd';
 import { Dropdown, Form, Button } from 'react-bootstrap';
+import DateTimePicker from 'react-datetime-picker';
 import ConfirmModal from '../Common/ConfirmModal';
 import { MODAL_ACTION_CONFIRM } from '../../uitilities/constants';
 import {
@@ -12,7 +13,6 @@ import {
 } from '../../uitilities/contentEditable';
 import { cloneDeep } from 'lodash';
 import { createNewCard } from '../../actions/ApiCall';
-
 function Column(props) {
   const { column, onCardDrop, onUpdateColumnState } = props;
   const cards = mapOrder(column.cards, column.cardOrder, column._id);
@@ -31,6 +31,13 @@ function Column(props) {
 
   const [newCardTitle, setNewCardTitle] = useState('');
   const onNewCardTitleChange = (e) => setNewCardTitle(e.target.value);
+
+  const [newCardTime, setNewCardTime] = useState(new Date());
+  // const onNewCardTimeChange = (e) => setNewCardTime(e.target.value);
+
+  const [newCardStatus, setNewCardStatus] = useState(false);
+  const onNewCardStatusChange = () => setNewCardStatus(!newCardStatus);
+
 
   useEffect(() => {
     setColumnTitle(column.title);
@@ -75,6 +82,7 @@ function Column(props) {
       boardId: column.boardId,
       columnId: column._id,
       title: newCardTitle.trim(),
+      time: newCardTime
     };
 
     //call API create new card
@@ -85,6 +93,7 @@ function Column(props) {
 
       onUpdateColumnState(newColumn); //dùng lại hàm onUpdateColumnState cho chức năng thêm mới và cập nhật card vào Column
       setNewCardTitle('');
+      setNewCardTime();
       toggleOpenNewCardForm();
     });
   };
@@ -158,6 +167,16 @@ function Column(props) {
               value={newCardTitle}
               onChange={onNewCardTitleChange}
               onKeyDown={(event) => event.key === 'Enter' && addNewCard()}
+            />
+            <DateTimePicker
+              value={newCardTime}
+              onChange={setNewCardTime}
+              onKeyDown={(event) => event.key === 'Enter' && addNewCard()}
+              // disableClock={true}
+            />
+            <Form.Check 
+              aria-label="option 1" 
+              onChange={onNewCardStatusChange}
             />
           </div>
         )}

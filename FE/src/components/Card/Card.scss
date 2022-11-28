@@ -1,7 +1,6 @@
 @import '../../setting.scss';
 
 $card-border-radius: 5px;
-
 .card-item {
     background-color: white;
     padding: $gap;
@@ -9,6 +8,8 @@ $card-border-radius: 5px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     margin-bottom: $gap;
+    display: flex;
+    align-items: center;
     
     img.card-cover {
       display: block;
@@ -16,5 +17,20 @@ $card-border-radius: 5px;
       margin: -$gap 0 $gap (-$gap);
       border-top-left-radius: $card-border-radius;
       border-top-right-radius: $card-border-radius;
+    }
+    .actions {
+      display: flex;
+      margin-left: 90px;
+      align-items: center;
+      justify-content: space-between;
+      .time {
+        font-size: 14px;
+        color: grey;
+        padding-right: 10px;
+        &:hover {
+          cursor: pointer;
+          color: darken($color: grey, $amount: 50);
+        }
+      }
     }
   }

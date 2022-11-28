@@ -1,5 +1,6 @@
 import React from 'react'
-
+import { Form } from 'react-bootstrap';
+import Moment from 'react-moment';
 import './Card.scss'
 
 function Card(props) {
@@ -14,7 +15,15 @@ function Card(props) {
                onMouseDown={e => e.preventDefault()}
             />
          }
-        {card.title}
+         {card.title}
+         <div className="actions">
+            <Moment className="time" format="DD/MM/y HH:mm ">{card.time}</Moment>
+            <Form.Check className="check-box">
+               {card.status}
+            </Form.Check>
+         </div>
+        
+         
         </div>
      )
 }

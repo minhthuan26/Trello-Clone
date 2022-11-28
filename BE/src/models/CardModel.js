@@ -27,7 +27,7 @@ const CardSchema = mongoose.Schema({
         default: false
     },
     time: {
-        type: String,
+        type: Date,
         unique: true,
         required:true
     },
