@@ -8,7 +8,7 @@ class CardController {
             // const dateOfColumn = await column.findOne({_id:req.body.columnId})
             // const newCard = await card.create(req.body)
             const {boardId, columnId, title, time, status} = req.body
-            if(!boardId || !columnId || !title, !time)
+            if(!boardId || !columnId || !title || !time)
                 return res.status(403).json({msg: 'Board Id, column Id, title, time and status could not be null'})
             const newCard = await card.create({
                 boardId,
@@ -17,7 +17,7 @@ class CardController {
                 time,
                 status
             })
-            // if(newCard){
+            if(newCard){
                 await column.findOneAndUpdate(
                     {
                         _id: newCard.columnId
@@ -30,9 +30,9 @@ class CardController {
                     }
                 ) 
     
-                res.status(201).json(newCard)
-            // }
-            // return res.status(500).json({msg: 'Something went wrong while creating new card'})
+                return res.status(201).json(newCard)
+            }
+            return res.status(500).json({msg: 'Something went wrong while creating new card'})
         } catch (error) {
             return res.status(500).json({
                 errors: error.message

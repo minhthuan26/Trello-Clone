@@ -82,7 +82,8 @@ function Column(props) {
       boardId: column.boardId,
       columnId: column._id,
       title: newCardTitle.trim(),
-      time: newCardTime
+      time: newCardTime,
+      status: newCardStatus
     };
 
     //call API create new card
@@ -94,6 +95,7 @@ function Column(props) {
       onUpdateColumnState(newColumn); //dùng lại hàm onUpdateColumnState cho chức năng thêm mới và cập nhật card vào Column
       setNewCardTitle('');
       setNewCardTime();
+      setNewCardStatus();
       toggleOpenNewCardForm();
     });
   };
@@ -177,6 +179,7 @@ function Column(props) {
             <Form.Check 
               aria-label="option 1" 
               onChange={onNewCardStatusChange}
+              value={newCardStatus}
             />
           </div>
         )}
