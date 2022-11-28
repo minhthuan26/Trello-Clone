@@ -18,7 +18,7 @@ export const createNewColumn = async (data) => {
 //update or remove column
 export const updateColumn = async (id, data) => {
   const request = await axios.patch(
-    `${API_ROOT}/api/v1/columns/update/${id}`,
+    `${API_ROOT}/api/v1/columns/change-status/${id}`,
     data
   );
   console.log(request);
@@ -27,6 +27,6 @@ export const updateColumn = async (id, data) => {
 
 export const createNewCard = async (data) => {
   const request = await axios.post(`${API_ROOT}/api/v1/cards/create`, data);
-  window.location.reload(false);
+  // window.location.reload(false);
   return request.data;
 };
