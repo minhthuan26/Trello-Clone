@@ -38,7 +38,6 @@ function Column(props) {
   const [newCardStatus, setNewCardStatus] = useState(false);
   const onNewCardStatusChange = () => setNewCardStatus(!newCardStatus);
 
-
   useEffect(() => {
     setColumnTitle(column.title);
   }, [column.title]);
@@ -82,7 +81,7 @@ function Column(props) {
       boardId: column.boardId,
       columnId: column._id,
       title: newCardTitle.trim(),
-      time: newCardTime
+      time: newCardTime,
     };
 
     //call API create new card
@@ -90,7 +89,7 @@ function Column(props) {
       let newColumn = cloneDeep(column);
       newColumn.cards.push(card);
       newColumn.cardOrder.push(card._id);
-
+      window.location.reload(false);
       onUpdateColumnState(newColumn); //dùng lại hàm onUpdateColumnState cho chức năng thêm mới và cập nhật card vào Column
       setNewCardTitle('');
       setNewCardTime();
@@ -174,8 +173,8 @@ function Column(props) {
               onKeyDown={(event) => event.key === 'Enter' && addNewCard()}
               // disableClock={true}
             />
-            <Form.Check 
-              aria-label="option 1" 
+            <Form.Check
+              aria-label="option 1"
               onChange={onNewCardStatusChange}
             />
           </div>
