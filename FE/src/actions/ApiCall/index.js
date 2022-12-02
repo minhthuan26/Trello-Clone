@@ -27,6 +27,5 @@ export const updateColumn = async (id, data) => {
 
 export const createNewCard = async (data) => {
   const request = await axios.post(`${API_ROOT}/api/v1/cards/create`, data);
-  // window.location.reload(false);
   return request.data;
 };

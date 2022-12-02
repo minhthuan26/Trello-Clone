@@ -14,6 +14,7 @@ import { fetchBoardDetails, createNewColumn } from '../../actions/ApiCall';
 import { mapOrder } from '../../uitilities/sort';
 import { applyDrag } from '../../uitilities/dragDrop';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 function BoardContent() {
   const user = useSelector((state) => state.auth.login.currentUser);
@@ -31,12 +32,27 @@ function BoardContent() {
 
   //call API get full board
   useEffect(() => {
-    const boardId = '637b22b7995af06455f39ab7';
-    //goi api getFullboard(accessToken) => boardid
-    fetchBoardDetails(boardId, accessToken).then((board) => {
-      setBoard(board);
-      setColumns(mapOrder(board.columns, board.columnOrder, board._id));
-    });
+    //goi api getBoardID tu ham getFullBoard truyen vo accessToken
+    //data tra ve gom Boardid , title
+    //goi api khi thanh cong truyen res.data.id vao ham fetchBoardDetails(res.data.id)
+    //
+    try {
+      axios
+        .get(`//localhost:3000/api/v1/boards/`, {
+          headers: { Token: `Bearer ${accessToken}` },
+        })
+        .then((res) => {
+          console.log(res.data);
+          const result = res.data;
+          const boardID = result[0].id;
+          fetchBoardDetails(boardID, accessToken).then((board) => {
+            setBoard(board);
+            setColumns(mapOrder(board.columns, board.columnOrder, board._id));
+          });
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   //focus con trỏ vào input
