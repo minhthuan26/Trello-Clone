@@ -35,9 +35,6 @@ function Column(props) {
   const [newCardTime, setNewCardTime] = useState(new Date());
   // const onNewCardTimeChange = (e) => setNewCardTime(e.target.value);
 
-  const [newCardStatus, setNewCardStatus] = useState(false);
-  const onNewCardStatusChange = () => setNewCardStatus(!newCardStatus);
-
   useEffect(() => {
     setColumnTitle(column.title);
   }, [column.title]);
@@ -172,10 +169,6 @@ function Column(props) {
               onChange={setNewCardTime}
               onKeyDown={(event) => event.key === 'Enter' && addNewCard()}
               // disableClock={true}
-            />
-            <Form.Check
-              aria-label="option 1"
-              onChange={onNewCardStatusChange}
             />
           </div>
         )}

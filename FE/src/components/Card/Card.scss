@@ -10,6 +10,7 @@ $card-border-radius: 5px;
     margin-bottom: $gap;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     
     img.card-cover {
       display: block;
