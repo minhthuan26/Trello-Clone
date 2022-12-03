@@ -9,20 +9,20 @@ const ColumnSchema = mongoose.Schema({
     title: {
         type: String,
         required: true,
-        unique: true,
+        unique: false,
         minLength: 3,
-        maxLength: 20 
+        maxLength: 255 
 
     },
     date: {
         type: Date,
-        unique: true,
+        unique: false,
         required: true,
         default: Date.now
     },
     cardOrder: {
         type: Array,
-        unique: true,
+        unique: false,
         default: []
     },
     _destroy: {
