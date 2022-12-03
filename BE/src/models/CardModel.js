@@ -12,9 +12,9 @@ const CardSchema = mongoose.Schema({
     title: {
         type: String,
         required: true,
-        unique: true,
+        unique: false,
         minLength: 3,
-        maxLength: 20 
+        maxLength: 255 
 
     },
     cover: {
@@ -28,7 +28,6 @@ const CardSchema = mongoose.Schema({
     },
     time: {
         type: Date,
-        unique: true,
         required:true
     },
     _destroy: {

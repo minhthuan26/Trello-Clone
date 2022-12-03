@@ -9,4 +9,6 @@ router.route('/create')
 router.route('/change-status/:id')
     .patch(cardController.changeStatus)
     
+router.route('/delete/:id')
+    .delete(cardController.delete)
 module.exports = router
