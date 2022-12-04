@@ -25,6 +25,18 @@ export const updateColumn = async (id, data) => {
   return request.data;
 };
 
+export const deleteColumn = async (id, data) => {
+  const request = await axios.delete(`${API_ROOT}/api/v1/columns/delete/${id}`, data);
+  window.location.reload(false);
+  return request.data;
+};
+
+export const deleteCard = async (id, data) => {
+  const request = await axios.delete(`${API_ROOT}/api/v1/cards/delete/${id}`, data);
+  window.location.reload(false);
+  return request.data;
+};
+
 export const createNewCard = async (data) => {
   const request = await axios.post(`${API_ROOT}/api/v1/cards/create`, data);
   return request.data;

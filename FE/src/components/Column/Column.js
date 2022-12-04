@@ -11,8 +11,8 @@ import {
   saveContentAfterPressEnter,
   selectAllInLineText,
 } from '../../uitilities/contentEditable';
-import { cloneDeep } from 'lodash';
-import { createNewCard } from '../../actions/ApiCall';
+import { cloneDeep, update } from 'lodash';
+import { createNewCard, deleteColumn, deleteCard } from '../../actions/ApiCall';
 function Column(props) {
   const { column, onCardDrop, onUpdateColumnState } = props;
   const cards = mapOrder(column.cards, column.cardOrder, column._id);
@@ -47,15 +47,15 @@ function Column(props) {
     }
   }, [openNewCardForm]);
 
-  const onConfirmModalAction = (type) => {
+  const onConfirmModalColumnAction = (type) => {
     console.log(type);
     if (type === MODAL_ACTION_CONFIRM) {
       //remove column
-      const newColumn = {
-        ...column,
-        _destroy: true, //remove
-      };
-      onUpdateColumnState(newColumn);
+
+      //call API delele column
+      deleteColumn(column._id, column).then(deletedColumn => {
+        onUpdateColumnState(deletedColumn)
+      })
     }
     toggleShowConfirmModal();
   };
@@ -126,7 +126,9 @@ function Column(props) {
               <Dropdown.Item onClick={toggleShowConfirmModal}>
                 Remove Column...
               </Dropdown.Item>
-              <Dropdown.Item>Move Card</Dropdown.Item>
+              <Dropdown.Item onClick={toggleShowConfirmModal}>
+                Remove Card...
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
@@ -194,7 +196,7 @@ function Column(props) {
 
       <ConfirmModal
         show={showConfirmModal}
-        onAction={onConfirmModalAction}
+        onAction={onConfirmModalColumnAction}
         title="Remove column"
         content={`Are you sure you want to remove <strong>${column.title}</strong>. <br /> All related cards will also be removed!`}
       />
