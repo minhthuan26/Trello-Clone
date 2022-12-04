@@ -10,6 +10,8 @@ $card-border-radius: 5px;
     margin-bottom: $gap;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    font-size: 14.5px;
     
     img.card-cover {
       display: block;
@@ -24,7 +26,7 @@ $card-border-radius: 5px;
       align-items: center;
       justify-content: space-between;
       .time {
-        font-size: 14px;
+        font-size: 13px;
         color: grey;
         padding-right: 10px;
         &:hover {
@@ -32,5 +34,40 @@ $card-border-radius: 5px;
           color: darken($color: grey, $amount: 50);
         }
       }
+      .column-dropdown-actions {
+        flex: 10%;
+        button.dropdown-btn {
+          
+          padding: 0 8px;
+          font-size: 16px;
+          height: 32px;
+          font-weight: bold;
+          letter-spacing: 1px; //giãn kí tự chữ 
+          background-color: $column-bg-color;
+          border-color: $column-bg-color;
+          color: $app-main-text-color;
+          &:after {
+            content: '...';
+            border: none;
+            vertical-align: 1.255em;
+          }
+          &:hover {
+            background-color: darken($column-bg-color, 10);
+            border-color: darken($column-bg-color, 10);
+          }
+        }
+        .dropdown-menu {
+          padding: 0;
+          margin-top: -10px;
+          min-width: 200px;
+          a.dropdown-item {
+            padding: 0.1rem 1rem;
+            font-size: 14px;
+            &:not(:last-child) {
+              border-bottom: 1px solid darken($column-bg-color, 10);
+            }
+          }
+        }
+      }  
     }
   }

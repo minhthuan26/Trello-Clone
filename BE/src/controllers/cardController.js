@@ -30,9 +30,9 @@ class CardController {
                     }
                 ) 
     
-                return res.status(201).json(newCard)
+               return res.status(201).json(newCard)
             }
-            return res.status(500).json({msg: 'Something went wrong while creating new card'})
+            return res.status(500).json({msg: 'Something went wrong while creating new c ard'})
         } catch (error) {
             return res.status(500).json({
                 errors: error.message
@@ -57,7 +57,7 @@ class CardController {
                 return res.status(200).json({ msg: 'change Status success' })
             }
             else{
-                res.status(404).json({msg:'This card is not existed'})
+              return  res.status(404).json({msg:'This card is not existed'})
             }
             // console.log(find)
         } catch (error) {
@@ -67,39 +67,39 @@ class CardController {
         }
     }
 
-    // updateData = async(req, res)=>{
-    //     try {
-    //         const {id} = req.params.id
-    //         const data = req.body
-    //         const find = await card.findOne({id})
-    //         if(find){
-    //             const result = await card.findOneAndUpdate(
-    //                 {
-    //                     id
-    //                 }
-    //             ,
-    //             data
-    //             ,{
-    //                 new: true, //return ve document update thay vi document original
-    //                 // upsert: true // neu khong co thi insert
-    //                 newValidate:true,
-    //             })
-    //             return res.status(200).json(result)
-    //         }else{
-    //             return res.status(404).json({
-    //                 msg: `Card with id: ${id} not exist`
-    //             })
-    //         }
+    delete = async(req, res)=>{
+        try {
+            const find = await card.findOne({_id:req.params.id})
+            if(find){
+                 await card.deleteOne({
+                    _id: req.params.id
+                })
+                // await board.findOneAndUpdate(
+                //     {
+                //         _id: find.boardId
+                //     },
+                //     {
+                //         delete: {columnOrder: req.params.id}
+                //     },
+                //     {
+                //         returnOriginal: false
+                //     }
+                // )
+                return res.status(200).json({
+                    msg: `Delete card with title: ${find.title} successful`
+                })
+            }else{
+                return res.status(404).json({
+                    msg: `Column with id: ${id} not exist`
+                })
+            }           
 
-    //         console.log(result)
-           
-
-    //     } catch (error) {
-    //         res.status(500).json({
-    //             errors: error.message
-    //         })
-    //     }
-    // }
+        } catch (error) {
+            res.status(500).json({
+                errors: error.message
+            })
+        }
+    }
     
 }
 

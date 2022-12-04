@@ -61,13 +61,14 @@ class BoardController {
                     }
                 ])
                 // console.log(result[0].cards)
-    
+
                 result[0].columns.forEach(column => {
                     // console.log(result[0].cards.filter(c=> c.columnId===column._id))
                     column.cards = result[0].cards.filter(c=> c.columnId.toString() == column._id.toString())
                 });
     
                 delete result[0].cards
+
                 res.status(200).json(result)
     
                 return result[0] || {}
