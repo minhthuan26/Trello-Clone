@@ -1,5 +1,6 @@
 const column = require('../models/ColumnModel')
 const board = require('../models/BoardModel')
+const card = require('../models/cardModel')
 
 class ColumnController {
      createNew = async (req, res) =>{
@@ -19,7 +20,7 @@ class ColumnController {
 
             // const updatedBoard = await board.pushColumnOrder(boardId, newColumnId)
             // console.log(newColumn.date.toString())
-            res.status(200).json(newColumn)
+           return res.status(200).json(newColumn)
         } catch (error) {
             res.status(500).json({
                 errors: error.message
@@ -96,20 +97,15 @@ class ColumnController {
         try {
             const find = await column.findOne({_id:req.params.id})
             if(find){
-                 await column.deleteOne({
+
+
+                const deleteCol =  await column.deleteOne({
                     _id: req.params.id
                 })
-                // await board.findOneAndUpdate(
-                //     {
-                //         _id: find.boardId
-                //     },
-                //     {
-                //         delete: {columnOrder: req.params.id}
-                //     },
-                //     {
-                //         returnOriginal: false
-                //     }
-                // )
+                const deleteCard = await card.deleteMany({
+                    columnId:req.params.id
+                })
+                
                 return res.status(200).json({
                     msg: `Delete column with title: ${find.title} successful`
                 })
