@@ -30,7 +30,7 @@ class CardController {
                     }
                 ) 
     
-                res.status(201).json(newCard)
+               return res.status(201).json(newCard)
             // }
             // return res.status(500).json({msg: 'Something went wrong while creating new c ard'})
         } catch (error) {
@@ -57,7 +57,7 @@ class CardController {
                 return res.status(200).json({ msg: 'change Status success' })
             }
             else{
-                res.status(404).json({msg:'This card is not existed'})
+              return  res.status(404).json({msg:'This card is not existed'})
             }
             // console.log(find)
         } catch (error) {
